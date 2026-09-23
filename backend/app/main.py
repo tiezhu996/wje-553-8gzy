@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import assignments, attendance, audit, auth, courses, grades, students
 from app.core.config import get_settings
-from app.core.database import Base, engine
+from app.core.database import Base, engine, run_lightweight_migrations
 from app.middlewares.auth_middleware import AuthMiddleware
 from app.middlewares.authorization_middleware import AuthorizationMiddleware
 from app.middlewares.audit_middleware import AuditMiddleware
@@ -11,6 +11,7 @@ from app import models
 
 settings = get_settings()
 Base.metadata.create_all(bind=engine)
+run_lightweight_migrations()
 
 app = FastAPI(title=settings.app_name)
 app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in settings.cors_origins.split(",")], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])

@@ -6,5 +6,7 @@ export const AttendanceStatus = { PENDING: 'PENDING', PRESENT: 'PRESENT', ABSENT
 export type AttendanceStatus = typeof AttendanceStatus[keyof typeof AttendanceStatus];
 export const CourseStatus = { DRAFT: 'DRAFT', PUBLISHED: 'PUBLISHED', IN_PROGRESS: 'IN_PROGRESS', COMPLETED: 'COMPLETED', ARCHIVED: 'ARCHIVED' } as const;
 export type CourseStatus = typeof CourseStatus[keyof typeof CourseStatus];
+export const EnrollmentStatus = { ENROLLED: 'ENROLLED', WAITLISTED: 'WAITLISTED' } as const;
+export type EnrollmentStatus = typeof EnrollmentStatus[keyof typeof EnrollmentStatus];
 export const UserRole = { ADMIN: 'ADMIN', TEACHER: 'TEACHER', STUDENT: 'STUDENT' } as const;
 export type UserRole = typeof UserRole[keyof typeof UserRole];

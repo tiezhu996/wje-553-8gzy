@@ -25,6 +25,10 @@ class CourseStatus(str, Enum):
     COMPLETED = "COMPLETED"
     ARCHIVED = "ARCHIVED"
 
+class EnrollmentStatus(str, Enum):
+    ENROLLED = "ENROLLED"
+    WAITLISTED = "WAITLISTED"
+
 class UserRole(str, Enum):
     ADMIN = "ADMIN"
     TEACHER = "TEACHER"
