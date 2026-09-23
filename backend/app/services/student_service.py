@@ -13,6 +13,12 @@ class StudentService:
             raise HTTPException(status_code=404, detail="Student not found")
         return student
 
+    def get_by_user_id(self, db: Session, user_id: str) -> Student:
+        student = db.query(Student).filter(Student.user_id == user_id).first()
+        if not student:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+        return student
+
     def create_student(self, db: Session, payload: StudentCreate) -> Student:
         student = Student(**payload.model_dump())
         db.add(student); db.commit(); db.refresh(student)

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel
-from app.core.enums import CourseStatus
+from app.core.enums import CourseStatus, EnrollmentStatus
 
 class CourseBase(BaseModel):
     name: str
@@ -26,8 +26,16 @@ class CourseRead(CourseBase):
     id: UUID
     teacher_name: str | None = None
     enrolled_count: int = 0
+    waitlisted_count: int = 0
+    my_status: EnrollmentStatus | None = None
+    my_position: int | None = None
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
+
+class EnrollmentResult(BaseModel):
+    message: str
+    status: EnrollmentStatus
+    position: int | None = None

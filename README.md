@@ -63,7 +63,16 @@ Docker Compose 启动后会自动执行 `PYTHONPATH=. python seeds/seed_all.py` 
 | `AssignmentType` | 后端: `app/core/enums.py`, `app/models/assignment.py`, `app/schemas/assignment_schema.py`, `app/services/assignment_service.py`, `app/api/assignments.py`; 前端: `src/constants/enums.ts`, `src/types/assignment.d.ts`, `src/api/assignments.ts`, `src/stores/assignmentStore.ts`, `src/pages/Assignments.vue`, `src/components/common/StatusTag.vue` |
 | `AttendanceStatus` | 后端: `app/core/enums.py`, `app/models/attendance.py`, `app/schemas/attendance_schema.py`, `app/services/attendance_service.py`, `app/api/attendance.py`; 前端: `src/constants/enums.ts`, `src/types/attendance.d.ts`, `src/api/attendance.ts`, `src/stores/attendanceStore.ts`, `src/pages/Attendance.vue`, `src/components/common/StatusTag.vue` |
 | `CourseStatus` | 后端: `app/core/enums.py`, `app/models/course.py`, `app/schemas/course_schema.py`, `app/services/course_service.py`, `app/api/courses.py`; 前端: `src/constants/enums.ts`, `src/types/course.d.ts`, `src/api/courses.ts`, `src/stores/courseStore.ts`, `src/pages/Courses.vue`, `src/pages/CourseDetail.vue`, `src/components/common/StatusTag.vue` |
+| `EnrollmentStatus` | 后端: `app/core/enums.py`, `app/models/enrollment.py`, `app/schemas/course_schema.py`, `app/services/course_service.py`, `app/api/courses.py`; 前端: `src/constants/enums.ts`, `src/types/course.d.ts`, `src/api/courses.ts`, `src/stores/courseStore.ts`, `src/pages/Courses.vue` |
 | `UserRole` | 后端: `app/core/enums.py`, `app/models/user.py`, `app/core/permissions.py`, `app/middlewares/auth_middleware.py`, `app/services/auth_service.py`, `app/api/auth.py`; 前端: `src/constants/enums.ts`, `src/constants/permissions.ts`, `src/types/common.d.ts`, `src/stores/authStore.ts`, `src/hooks/useAuth.ts`, `src/router/index.ts`, `src/directives/v-permission.ts` |
+
+## 选课候补队列
+
+- 学生选课时，课程有空位则直接入选（`ENROLLED`）；满额后自动进入候补队列（`WAITLISTED`），接口返回并按提交顺序显示排队位置（从 1 开始）。
+- 有人退课时，等待最久且仍在候补的学生在同一事务内自动补位；选课/退课/调容均对课程行加锁（`SELECT ... FOR UPDATE`），并发选课请求无法抢走补位名额。
+- 候补学生可主动退出候补（`DELETE /api/courses/{id}/waitlist/{student_id}`）。
+- 管理员/教师调低课程容量时，若新容量少于当前已入选人数，调整被拒绝并提示还差多少人；调高容量时按等待顺序自动补位。
+- 课程列表与详情展示入选人数与候补人数；学生视角额外显示本人选课状态与候补位置。
 
 ## 说明
 
